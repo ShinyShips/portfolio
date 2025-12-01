@@ -180,6 +180,7 @@ export const DATA = {
         "React",
         "TailwindCSS",
         "Shopify API",
+        "Neobrutalism Design",
       ],
       links: [
         {
@@ -193,7 +194,7 @@ export const DATA = {
   ],
   minorProjects: [
     {
-      title: "Surface Pro Stock Tracker",
+      title: "Surface Pro Availability Tracker",
       href: "https://github.com/ShinyShips/check-surface-stock",
       dates: "November 2025 - Present",
       active: true,
