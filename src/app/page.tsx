@@ -117,7 +117,7 @@ export default function Page() {
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <div className="inline-block rounded-lg bg-foreground text-background px-3 py-1 text-sm">
-                  My Projects
+                  Major Projects
                 </div>
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
                   Check out my latest work
@@ -132,6 +132,39 @@ export default function Page() {
           </BlurFade>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto">
             {DATA.projects.map((project, id) => (
+              <BlurFade
+                key={project.title}
+                delay={BLUR_FADE_DELAY * 12 + id * 0.05}
+              >
+                <ProjectCard
+                  href={project.href}
+                  key={project.title}
+                  title={project.title}
+                  description={project.description}
+                  dates={project.dates}
+                  tags={project.technologies}
+                  image={project.image}
+                  links={project.links}
+                />
+              </BlurFade>
+            ))}
+          </div>
+        </div>
+        <div className="space-y-12 w-full py-12">
+          <BlurFade delay={BLUR_FADE_DELAY * 11}>
+            <div className="flex flex-col items-center justify-center space-y-4 text-center">
+              <div className="space-y-2">
+                <div className="inline-block rounded-lg bg-foreground text-background px-3 py-1 text-sm">
+                  Minor Projects
+                </div>
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
+                  Check out stuff I&apos;ve made to make my life easier
+                </h2>
+              </div>
+            </div>
+          </BlurFade>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto">
+            {DATA.minorProjects.map((project, id) => (
               <BlurFade
                 key={project.title}
                 delay={BLUR_FADE_DELAY * 12 + id * 0.05}
