@@ -139,9 +139,9 @@ export const portfolio: PortfolioData = {
       text: "Georgia Tech",
       href: "https://gatech.edu",
     },
-    ". I interned at Colgate-Palmolive and L3Harris, and today I help build the ",
+    ". I interned at Colgate-Palmolive and L3Harris, and today I’m creating ",
     {
-      text: "next generation of GPS at L3Harris",
+      text: "a modern metadata-driven React application at L3Harris",
       href: "https://www.l3harris.com/",
       emphasis: true,
     },
@@ -159,7 +159,7 @@ export const portfolio: PortfolioData = {
       summary: {
         period: "2021 — NOW",
         role: "Sr. Associate SWE",
-        detail: "Next-gen GPS",
+        detail: "Metadata-driven React app",
       },
       details: {
         period: "JAN 2021 — PRESENT",
@@ -168,7 +168,7 @@ export const portfolio: PortfolioData = {
         responsibilities: [
           "Led a complete overhaul of performance and UX by developing a Single Page Application for a real-time, data-intensive touchscreen embedded system using React and Redux.",
           "Designed new user interfaces in Figma that kept the style users were accustomed to while improving visual feedback and minimizing distractions.",
-          "Currently developing the navigation component of the next-generation ground control segment for GPS satellites — accurate real-time position and velocity for space vehicles, in Java and Python.",
+          "Currently creating a modern metadata-driven React application.",
         ],
         technologies: ["React", "Redux", "Java", "Python", "Figma"],
       },
