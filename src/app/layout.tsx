@@ -1,51 +1,90 @@
-import Navbar from "@/components/navbar";
 import { ThemeProvider } from "@/components/theme-provider";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { DATA } from "@/data/resume";
-import { cn } from "@/lib/utils";
-import type { Metadata } from "next";
-import { Inter as FontSans } from "next/font/google";
+import { portfolio } from "@/data/portfolio";
+import type { Metadata, Viewport } from "next";
+import {
+  Archivo,
+  Caveat,
+  IBM_Plex_Mono,
+  Space_Grotesk,
+} from "next/font/google";
 import "./globals.css";
 
-const fontSans = FontSans({
+const archivo = Archivo({
   subsets: ["latin"],
-  variable: "--font-sans",
+  weight: ["500", "700", "900"],
+  variable: "--font-archivo",
+  display: "swap",
+});
+
+const plexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-ibm-plex-mono",
+  display: "swap",
+});
+
+const caveat = Caveat({
+  subsets: ["latin"],
+  weight: ["600"],
+  variable: "--font-caveat",
+  display: "swap",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  weight: ["700"],
+  variable: "--font-space-grotesk",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(DATA.url),
+  metadataBase: new URL(portfolio.url),
   title: {
-    default: DATA.name,
-    template: `%s | ${DATA.name}`,
+    default: "Andy Nguyen — UX/Design Engineer",
+    template: "%s | Andy Nguyen",
   },
-  description: DATA.description,
+  description: portfolio.description,
+  alternates: {
+    canonical: "/",
+  },
+  icons: {
+    icon: "/favicon-512.png",
+    apple: "/favicon-512.png",
+  },
   openGraph: {
-    title: `${DATA.name}`,
-    description: DATA.description,
-    url: DATA.url,
-    siteName: `${DATA.name}`,
+    title: "Andy Nguyen — UX/Design Engineer",
+    description: portfolio.description,
+    url: "/",
+    siteName: "ATN",
     locale: "en_US",
     type: "website",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "ATN Air Mail portfolio by Andy Nguyen",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Andy Nguyen — UX/Design Engineer",
+    description: portfolio.description,
+    images: ["/og-image.png"],
   },
   robots: {
     index: true,
     follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
   },
-  twitter: {
-    title: `${DATA.name}`,
-    card: "summary_large_image",
-  },
-  verification: {
-    google: "",
-    yandex: "",
-  },
+};
+
+export const viewport: Viewport = {
+  colorScheme: "light dark",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#FDF9F1" },
+    { media: "(prefers-color-scheme: dark)", color: "#151A2B" },
+  ],
 };
 
 export default function RootLayout({
@@ -54,18 +93,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
       <body
-        className={cn(
-          "min-h-screen bg-background font-sans antialiased max-w-2xl mx-auto py-12 sm:py-24 px-6",
-          fontSans.variable
-        )}
+        className={`${archivo.variable} ${plexMono.variable} ${caveat.variable} ${spaceGrotesk.variable}`}
       >
-        <ThemeProvider attribute="class" defaultTheme="light">
-          <TooltipProvider delayDuration={0}>
-            {children}
-            <Navbar />
-          </TooltipProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem={false}
+          storageKey="atn-theme"
+        >
+          <div className="airmail-stripe" aria-hidden="true" />
+          {children}
         </ThemeProvider>
       </body>
     </html>
