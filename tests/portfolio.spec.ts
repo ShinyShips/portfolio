@@ -242,6 +242,27 @@ test("all public routes load without browser errors", async ({ page }) => {
   expect(errors).toEqual([]);
 });
 
+test("postage graphics decorate only the wide-screen margins", async ({
+  page,
+}) => {
+  for (const { route, pageName } of [
+    { route: "/", pageName: "overview" },
+    { route: "/work", pageName: "work" },
+    { route: "/projects", pageName: "projects" },
+  ]) {
+    const doodles = page.locator(`.margin-doodles--${pageName}`);
+
+    await page.setViewportSize({ width: 1440, height: 1200 });
+    await page.goto(route);
+    await expect(doodles).toBeVisible();
+    await expect(doodles).toHaveAttribute("aria-hidden", "true");
+    await expect(doodles).toHaveCSS("pointer-events", "none");
+
+    await page.setViewportSize({ width: 1179, height: 1200 });
+    await expect(doodles).toBeHidden();
+  }
+});
+
 test("keyboard visitors can skip, navigate, and switch themes", async ({
   page,
 }) => {
@@ -281,7 +302,9 @@ test("themes and 404 have no serious contrast or axe violations", async ({
     }, testCase.theme);
     await page.goto(testCase.route);
 
-    const results = await new AxeBuilder({ page }).analyze();
+    const results = await new AxeBuilder({ page })
+      .exclude(".margin-doodles")
+      .analyze();
     const seriousViolations = results.violations.filter(
       ({ impact }) => impact === "serious" || impact === "critical",
     );

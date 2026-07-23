@@ -103,7 +103,19 @@ button {
   transform: translateY(0);
 }
 
+.portfolio-frame {
+  position: relative;
+  min-height: calc(100vh - 14px);
+  overflow-x: clip;
+}
+
+.margin-doodles {
+  display: none;
+}
+
 .page-shell {
+  position: relative;
+  z-index: 1;
   width: min(100%, 848px);
   margin: 0 auto;
   padding: 0 clamp(18px, 5vw, 44px) 36px;
@@ -1236,6 +1248,287 @@ button {
 .return-button:focus-visible {
   transform: translate(-2px, -2px);
   box-shadow: 5px 5px 0 var(--shadow);
+}
+
+@media (min-width: 1180px) {
+  .margin-doodles {
+    position: absolute;
+    z-index: 0;
+    inset: -14px 0 0;
+    display: block;
+    pointer-events: none;
+    font-family: var(--font-archivo), sans-serif;
+  }
+
+  .margin-doodle {
+    position: absolute;
+    display: block;
+  }
+
+  .margin-doodle--home-postmark,
+  .margin-doodle--home-paid,
+  .margin-doodle--work-received,
+  .margin-doodle--projects-inspected {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 2px;
+    border-radius: 9999px;
+  }
+
+  .margin-doodle--home-postmark span,
+  .margin-doodle--home-paid span,
+  .margin-doodle--work-received span,
+  .margin-doodle--projects-inspected span {
+    font: 600 7.5px/1 var(--font-ibm-plex-mono), monospace;
+    letter-spacing: 0.14em;
+  }
+
+  .margin-doodle--home-postmark strong {
+    font: 700 16px/1 var(--font-archivo), sans-serif;
+  }
+
+  .margin-doodle--home-paid strong,
+  .margin-doodle--work-received strong,
+  .margin-doodle--projects-inspected strong {
+    font: 700 14px/1 var(--font-archivo), sans-serif;
+  }
+
+  .margin-doodle--home-postmark {
+    top: 150px;
+    left: calc(50% - 620px);
+    width: 104px;
+    height: 104px;
+    border: 2.5px solid
+      color-mix(in srgb, var(--ink) 16%, transparent);
+    color: color-mix(in srgb, var(--ink) 18%, transparent);
+    transform: rotate(-12deg);
+  }
+
+  .margin-doodle--home-postmark span {
+    font-size: 8px;
+  }
+
+  .margin-doodle--cancellation-lines {
+    top: 196px;
+    left: calc(50% - 560px);
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    transform: rotate(-12deg);
+  }
+
+  .margin-doodle--cancellation-lines span {
+    width: 110px;
+    height: 2px;
+    background: color-mix(in srgb, var(--ink) 14%, transparent);
+  }
+
+  .margin-doodle--home-fragile,
+  .margin-doodle--work-manifest,
+  .margin-doodle--projects-upright {
+    font: 600 11px/1 var(--font-ibm-plex-mono), monospace;
+    letter-spacing: 0.3em;
+    transform: rotate(-90deg);
+    transform-origin: left top;
+    white-space: nowrap;
+  }
+
+  .margin-doodle--home-fragile {
+    top: 640px;
+    left: calc(50% - 600px);
+    color: color-mix(in srgb, var(--red) 40%, transparent);
+  }
+
+  .margin-doodle--home-note,
+  .margin-doodle--work-note,
+  .margin-doodle--projects-note {
+    color: color-mix(in srgb, var(--blue) 45%, transparent);
+    font: 600 26px/1 var(--font-caveat), cursive;
+    white-space: nowrap;
+  }
+
+  .margin-doodle--home-note {
+    top: 980px;
+    left: calc(50% - 618px);
+    transform: rotate(-8deg);
+  }
+
+  .margin-doodle--home-stamp,
+  .margin-doodle--projects-stamp {
+    opacity: 0.75;
+  }
+
+  .margin-doodle--home-stamp {
+    top: 340px;
+    right: calc(50% - 615px);
+    transform: rotate(8deg);
+  }
+
+  .margin-doodle__stamp {
+    display: inline-block;
+    padding: 5px;
+    background: color-mix(
+      in srgb,
+      var(--stamp-paper) 70%,
+      transparent
+    );
+    mask-image:
+      radial-gradient(circle 2px, transparent 98%, #000),
+      linear-gradient(#000 0 0);
+    mask-position:
+      -3px -3px,
+      center;
+    mask-repeat: round, no-repeat;
+    mask-size:
+      6px 6px,
+      calc(100% - 6px) calc(100% - 6px);
+  }
+
+  .margin-doodle__stamp-frame {
+    display: inline-block;
+    padding: 4px 9px;
+    border: 1px solid rgba(23, 25, 28, 0.25);
+    color: color-mix(in srgb, var(--stamp-ink) 45%, transparent);
+    font: 700 24px/1 var(--font-space-grotesk), sans-serif;
+    letter-spacing: -0.06em;
+  }
+
+  .margin-doodle__stamp-frame span {
+    color: color-mix(in srgb, var(--red) 55%, transparent);
+  }
+
+  .margin-doodle--home-stripe,
+  .margin-doodle--work-stripe,
+  .margin-doodle--projects-stripe {
+    width: 8px;
+    background: repeating-linear-gradient(
+      -45deg,
+      color-mix(in srgb, var(--red) 30%, transparent) 0 10px,
+      transparent 10px 17px,
+      color-mix(in srgb, var(--blue) 30%, transparent) 17px 27px,
+      transparent 27px 34px
+    );
+  }
+
+  .margin-doodle--home-stripe {
+    top: 760px;
+    right: calc(50% - 590px);
+    height: 220px;
+  }
+
+  .margin-doodle--home-priority,
+  .margin-doodle--work-confirmed,
+  .margin-doodle--projects-special {
+    padding: 5px 10px;
+    border-radius: 4px;
+    font: 600 9px/1 var(--font-ibm-plex-mono), monospace;
+    letter-spacing: 0.2em;
+    white-space: nowrap;
+  }
+
+  .margin-doodle--home-priority {
+    top: 1150px;
+    right: calc(50% - 620px);
+    border: 2px solid color-mix(in srgb, var(--blue) 35%, transparent);
+    color: color-mix(in srgb, var(--blue) 45%, transparent);
+    transform: rotate(7deg);
+  }
+
+  .margin-doodle--home-paid {
+    right: calc(50% - 600px);
+    bottom: 220px;
+    width: 96px;
+    height: 96px;
+    border: 2.5px solid
+      color-mix(in srgb, var(--ink) 14%, transparent);
+    color: color-mix(in srgb, var(--ink) 16%, transparent);
+    transform: rotate(10deg);
+  }
+
+  .margin-doodle--work-confirmed {
+    top: 180px;
+    left: calc(50% - 610px);
+    padding: 6px 12px;
+    border: 2.5px solid
+      color-mix(in srgb, var(--red) 40%, transparent);
+    color: color-mix(in srgb, var(--red) 50%, transparent);
+    font-size: 10px;
+    transform: rotate(-7deg);
+  }
+
+  .margin-doodle--work-manifest {
+    top: 560px;
+    left: calc(50% - 600px);
+    color: color-mix(in srgb, var(--ink) 22%, transparent);
+  }
+
+  .margin-doodle--work-received {
+    top: 300px;
+    right: calc(50% - 600px);
+    width: 96px;
+    height: 96px;
+    border: 2.5px solid
+      color-mix(in srgb, var(--ink) 15%, transparent);
+    color: color-mix(in srgb, var(--ink) 17%, transparent);
+    transform: rotate(11deg);
+  }
+
+  .margin-doodle--work-stripe {
+    top: 700px;
+    right: calc(50% - 588px);
+    height: 200px;
+  }
+
+  .margin-doodle--work-note {
+    right: calc(50% - 615px);
+    bottom: 160px;
+    transform: rotate(-6deg);
+  }
+
+  .margin-doodle--projects-inspected {
+    top: 170px;
+    left: calc(50% - 615px);
+    width: 100px;
+    height: 100px;
+    border: 2.5px solid
+      color-mix(in srgb, var(--ink) 15%, transparent);
+    color: color-mix(in srgb, var(--ink) 17%, transparent);
+    transform: rotate(-10deg);
+  }
+
+  .margin-doodle--projects-upright {
+    top: 620px;
+    left: calc(50% - 598px);
+    color: color-mix(in srgb, var(--red) 38%, transparent);
+  }
+
+  .margin-doodle--projects-note {
+    left: calc(50% - 612px);
+    bottom: 300px;
+    transform: rotate(-7deg);
+  }
+
+  .margin-doodle--projects-stamp {
+    top: 260px;
+    right: calc(50% - 612px);
+    transform: rotate(9deg);
+  }
+
+  .margin-doodle--projects-stripe {
+    top: 640px;
+    right: calc(50% - 588px);
+    height: 220px;
+  }
+
+  .margin-doodle--projects-special {
+    right: calc(50% - 618px);
+    bottom: 200px;
+    border: 2px solid color-mix(in srgb, var(--blue) 35%, transparent);
+    color: color-mix(in srgb, var(--blue) 45%, transparent);
+    transform: rotate(6deg);
+  }
 }
 
 @media (max-width: 540px) {

@@ -17,6 +17,101 @@ const externalProps = {
 
 export type ActivePage = "overview" | "work" | "projects";
 
+function MarginStamp() {
+  return (
+    <span className="margin-doodle__stamp">
+      <span className="margin-doodle__stamp-frame">
+        A<span>:</span>
+      </span>
+    </span>
+  );
+}
+
+function MarginDoodles({ page }: { page: ActivePage }) {
+  return (
+    <div
+      aria-hidden="true"
+      className={`margin-doodles margin-doodles--${page}`}
+    >
+      {page === "overview" ? (
+        <>
+          <span className="margin-doodle margin-doodle--home-postmark">
+            <span>JERSEY CITY</span>
+            <strong>JUL 23</strong>
+            <span>NJ · USA</span>
+          </span>
+          <span className="margin-doodle margin-doodle--cancellation-lines">
+            <span />
+            <span />
+            <span />
+          </span>
+          <span className="margin-doodle margin-doodle--home-fragile">
+            FRAGILE · HANDLE WITH CARE
+          </span>
+          <span className="margin-doodle margin-doodle--home-note">
+            par avion !
+          </span>
+          <span className="margin-doodle margin-doodle--home-stamp">
+            <MarginStamp />
+          </span>
+          <span className="margin-doodle margin-doodle--home-stripe" />
+          <span className="margin-doodle margin-doodle--home-priority">
+            PRIORITY ✦ POST
+          </span>
+          <span className="margin-doodle margin-doodle--home-paid">
+            <span>ATN.DEV</span>
+            <strong>2026</strong>
+            <span>POSTAGE PAID</span>
+          </span>
+        </>
+      ) : null}
+
+      {page === "work" ? (
+        <>
+          <span className="margin-doodle margin-doodle--work-confirmed">
+            CONFIRMED ✦ EMPLOYED
+          </span>
+          <span className="margin-doodle margin-doodle--work-manifest">
+            DUTY MANIFEST · 2017 — 2026
+          </span>
+          <span className="margin-doodle margin-doodle--work-received">
+            <span>RECEIVED</span>
+            <strong>ON TIME</strong>
+            <span>EVERY TIME</span>
+          </span>
+          <span className="margin-doodle margin-doodle--work-stripe" />
+          <span className="margin-doodle margin-doodle--work-note">
+            references on request
+          </span>
+        </>
+      ) : null}
+
+      {page === "projects" ? (
+        <>
+          <span className="margin-doodle margin-doodle--projects-inspected">
+            <span>CONTENTS</span>
+            <strong>INSPECTED</strong>
+            <span>&amp; APPROVED</span>
+          </span>
+          <span className="margin-doodle margin-doodle--projects-upright">
+            THIS SIDE UP ↑
+          </span>
+          <span className="margin-doodle margin-doodle--projects-note">
+            do not bend !
+          </span>
+          <span className="margin-doodle margin-doodle--projects-stamp">
+            <MarginStamp />
+          </span>
+          <span className="margin-doodle margin-doodle--projects-stripe" />
+          <span className="margin-doodle margin-doodle--projects-special">
+            SPECIAL ✦ DELIVERY
+          </span>
+        </>
+      ) : null}
+    </div>
+  );
+}
+
 export function StampLogo({
   variant = "header",
 }: {
@@ -89,7 +184,8 @@ export function PortfolioPageShell({
   children: ReactNode;
 }) {
   return (
-    <>
+    <div className="portfolio-frame">
+      <MarginDoodles page={activePage} />
       <a className="skip-link" href="#main-content">
         Skip to content
       </a>
@@ -98,7 +194,7 @@ export function PortfolioPageShell({
         <main id="main-content">{children}</main>
         <FooterLine />
       </div>
-    </>
+    </div>
   );
 }
 
