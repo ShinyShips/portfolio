@@ -263,6 +263,39 @@ test("postage graphics decorate only the wide-screen margins", async ({
   }
 });
 
+test("mobile header keeps the theme beside the logo and navigation on one row", async ({
+  page,
+}) => {
+  for (const width of [320, 375, 430]) {
+    await page.setViewportSize({ width, height: 812 });
+    await page.goto("/");
+
+    const logo = await page.getByRole("link", { name: "ATN home" }).boundingBox();
+    const theme = await page
+      .getByRole("button", { name: "Switch to Night Flight theme" })
+      .boundingBox();
+    const navLinks = await page
+      .getByRole("navigation", { name: "Primary navigation" })
+      .getByRole("link")
+      .all();
+    const navBoxes = await Promise.all(
+      navLinks.map((link) => link.boundingBox()),
+    );
+
+    expect(logo).not.toBeNull();
+    expect(theme).not.toBeNull();
+    expect(navBoxes.every((box) => box !== null)).toBe(true);
+
+    const logoCenter = logo!.y + logo!.height / 2;
+    const themeCenter = theme!.y + theme!.height / 2;
+    expect(Math.abs(logoCenter - themeCenter)).toBeLessThanOrEqual(1);
+
+    const navTop = navBoxes[0]!.y;
+    expect(navBoxes.every((box) => Math.abs(box!.y - navTop) <= 1)).toBe(true);
+    expect(navTop).toBeGreaterThan(logo!.y + logo!.height);
+  }
+});
+
 test("keyboard visitors can skip, navigate, and switch themes", async ({
   page,
 }) => {

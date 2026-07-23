@@ -1533,19 +1533,46 @@ button {
 
 @media (max-width: 540px) {
   .site-header {
-    min-height: 116px;
-    align-items: flex-start;
+    display: grid;
+    min-height: 128px;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 8px 12px;
+  }
+
+  .site-header > .logo-link {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .site-header > .status-chip {
+    grid-column: 3;
+    grid-row: 1;
+    justify-self: end;
   }
 
   .header-actions {
-    width: 100%;
-    justify-content: space-between;
+    display: contents;
   }
 
   .primary-nav {
-    flex: 1;
+    width: 100%;
+    grid-column: 1 / -1;
+    grid-row: 2;
     justify-content: space-between;
     gap: 0 8px;
+    flex-wrap: nowrap;
+  }
+
+  .primary-nav a {
+    white-space: nowrap;
+  }
+
+  .theme-toggle {
+    grid-column: 3;
+    grid-row: 1;
+    justify-self: end;
+    padding-right: 0;
   }
 
   .hero {
