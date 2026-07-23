@@ -1,24 +1,18 @@
 import {
   ContactEnvelope,
-  FooterLine,
   MinorParcel,
+  PortfolioPageShell,
   Postcard,
   SectionHeading,
-  SiteHeader,
   WorkCard,
 } from "@/components/airmail";
 import { portfolio } from "@/data/portfolio";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Page() {
   return (
-    <>
-      <a className="skip-link" href="#main-content">
-        Skip to content
-      </a>
-      <div className="page-shell">
-        <SiteHeader />
-        <main id="main-content">
+    <PortfolioPageShell activePage="overview">
           <section className="hero" aria-labelledby="hero-title">
             <div className="hero__copy">
               <p className="eyebrow">{portfolio.hero.eyebrow}</p>
@@ -43,8 +37,8 @@ export default function Page() {
             </div>
           </section>
 
-          <section id="about" className="portfolio-section">
-            <SectionHeading>About</SectionHeading>
+          <section id="overview" className="portfolio-section">
+            <SectionHeading>Overview</SectionHeading>
             <p className="about-copy">
               {portfolio.about.map((segment, index) =>
                 typeof segment === "string" ? (
@@ -71,6 +65,9 @@ export default function Page() {
                 <WorkCard key={item.company} item={item} />
               ))}
             </div>
+            <Link className="summary-link" href="/work">
+              OPEN THE FULL EMPLOYMENT RECORD →
+            </Link>
           </section>
 
           <section className="portfolio-section">
@@ -112,6 +109,9 @@ export default function Page() {
                 <Postcard key={project.title} project={project} index={index} />
               ))}
             </div>
+            <Link className="summary-link" href="/projects">
+              UNPACK ALL ENCLOSURES →
+            </Link>
           </section>
 
           <section className="portfolio-section">
@@ -124,9 +124,6 @@ export default function Page() {
           </section>
 
           <ContactEnvelope />
-        </main>
-        <FooterLine />
-      </div>
-    </>
+    </PortfolioPageShell>
   );
 }

@@ -9,7 +9,8 @@ envelope contact card, and a “Return to Sender” 404 page.
 
 ## Features
 
-- Responsive single-page portfolio with semantic section navigation
+- Responsive multi-page portfolio with Overview, Work, and Projects routes
+- Shared navigation with active-page state and a return-address contact anchor
 - Day and persistent “Night Flight” themes
 - Custom branded 404 experience
 - Static, typed portfolio content in `src/data/portfolio.ts`
@@ -21,6 +22,10 @@ envelope contact card, and a “Return to Sender” 404 page.
 | Day Flight | Night Flight |
 | --- | --- |
 | ![Air Mail portfolio in the Day Flight theme](docs/screenshots/day-flight-desktop.png) | ![Air Mail portfolio in the Night Flight theme](docs/screenshots/night-flight-desktop.png) |
+
+| Employment record | Project collection |
+| --- | --- |
+| ![Expanded Air Mail employment record](docs/screenshots/work-desktop.png) | ![Expanded Air Mail project collection](docs/screenshots/projects-desktop.png) |
 
 ## Development
 
@@ -51,6 +56,7 @@ pnpm exec playwright install chromium
 ## Architecture
 
 - Next.js 16 App Router and React 19
+- Static routes at `/`, `/work`, and `/projects`, plus the branded 404
 - Tailwind CSS 3 with a purpose-built Air Mail component layer
 - `next-themes` for the device-local theme preference
 - `next/font` for Archivo, IBM Plex Mono, Caveat, and Space Grotesk

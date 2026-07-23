@@ -10,7 +10,7 @@ test("visitor receives the complete Air Mail portfolio", async ({ page }) => {
   ).toBeVisible();
 
   for (const heading of [
-    "About",
+    "Overview",
     "Work",
     "Education",
     "Contents of Parcel",
@@ -19,6 +19,59 @@ test("visitor receives the complete Air Mail portfolio", async ({ page }) => {
     "Return Address",
   ]) {
     await expect(page.getByRole("heading", { name: heading })).toBeVisible();
+  }
+});
+
+test("expanded work and project records are available as first-class pages", async ({
+  page,
+}) => {
+  await page.goto("/work");
+  await expect(
+    page.getByRole("heading", { level: 1, name: "RE: Work." }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { level: 2, name: "L3Harris Technologies" }),
+  ).toBeVisible();
+  await expect(page.getByText("Senior Associate Software Engineer")).toBeVisible();
+  await expect(page.getByRole("link", { name: "WORK", exact: true })).toHaveAttribute(
+    "aria-current",
+    "page",
+  );
+  await expect(page).toHaveTitle("Work | Andy Nguyen");
+  await expect(
+    page.getByRole("link", { name: "POSTCARDS FROM MY PROJECTS →" }),
+  ).toHaveAttribute("href", "/projects");
+
+  await page.goto("/projects");
+  await expect(
+    page.getByRole("heading", { level: 1, name: "ENCL: Projects." }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { level: 2, name: "Maneuver", exact: true }),
+  ).toBeVisible();
+  await expect(page.locator(".project-feature h2")).toHaveText([
+    "Maneuver",
+    "Team 3314 Website",
+    "HudsonHapps",
+    "Piper's Patterns",
+  ]);
+  await expect(page.getByText("JUL 2025 — PRESENT")).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: "PROJECTS", exact: true }),
+  ).toHaveAttribute("aria-current", "page");
+  await expect(page).toHaveTitle("Projects | Andy Nguyen");
+  await expect(
+    page.locator(
+      'a[href="https://github.com/ShinyShips/Maneuver"][target="_blank"]',
+    ),
+  ).toHaveAttribute("href", "https://github.com/ShinyShips/Maneuver");
+  await expect(
+    page.getByRole("link", { name: "EMPLOYMENT RECORD →" }),
+  ).toHaveAttribute("href", "/work");
+
+  for (const link of await page.locator('a[target="_blank"]').all()) {
+    await expect(link).toHaveAttribute("rel", /noopener/);
+    await expect(link).toHaveAttribute("rel", /noreferrer/);
   }
 });
 
@@ -41,16 +94,31 @@ test("visitor can navigate the letter and safely open external addresses", async
 }) => {
   await page.goto("/");
 
-  for (const destination of [
-    { label: "ABOUT", id: "about" },
-    { label: "WORK", id: "work" },
-    { label: "PROJECTS", id: "projects" },
-    { label: "CONTACT", id: "contact" },
-  ]) {
-    await page.getByRole("link", { name: destination.label, exact: true }).click();
-    await expect(page).toHaveURL(new RegExp(`#${destination.id}$`));
-    await expect(page.locator(`#${destination.id}`)).toBeInViewport();
-  }
+  const overviewLink = page.getByRole("link", { name: "OVERVIEW", exact: true });
+  await expect(overviewLink).toHaveAttribute("href", "/");
+  await expect(overviewLink).toHaveAttribute("aria-current", "page");
+  await expect(page.getByRole("link", { name: "WORK", exact: true })).toHaveAttribute(
+    "href",
+    "/work",
+  );
+  await expect(
+    page.getByRole("link", { name: "PROJECTS", exact: true }),
+  ).toHaveAttribute("href", "/projects");
+  await expect(
+    page.getByRole("link", { name: "CONTACT", exact: true }),
+  ).toHaveAttribute("href", "/#contact");
+
+  await page.getByRole("link", { name: "WORK", exact: true }).click();
+  await expect(page).toHaveURL("/work");
+  await expect(page.getByRole("heading", { name: "RE: Work." })).toBeVisible();
+
+  await page.getByRole("link", { name: "PROJECTS", exact: true }).click();
+  await expect(page).toHaveURL("/projects");
+  await expect(page.getByRole("heading", { name: "ENCL: Projects." })).toBeVisible();
+
+  await page.getByRole("link", { name: "CONTACT", exact: true }).click();
+  await expect(page).toHaveURL("/#contact");
+  await expect(page.locator("#contact")).toBeInViewport();
 
   const externalLinks = page.locator('a[target="_blank"]');
   await expect(externalLinks).not.toHaveCount(0);
@@ -130,29 +198,48 @@ test("portfolio metadata and social card describe the Air Mail site", async ({
 test("semantic structure, heading order, and accessible names are complete", async ({
   page,
 }) => {
-  await page.goto("/");
+  for (const route of ["/", "/work", "/projects"]) {
+    await page.goto(route);
 
-  await expect(page.locator("header")).toHaveCount(1);
-  await expect(page.locator("main")).toHaveCount(1);
-  await expect(page.locator("footer")).toHaveCount(1);
-  await expect(page.getByRole("navigation", { name: "Primary navigation" })).toBeVisible();
+    await expect(page.locator("header")).toHaveCount(1);
+    await expect(page.locator("main")).toHaveCount(1);
+    await expect(page.locator("footer")).toHaveCount(1);
+    await expect(
+      page.getByRole("navigation", { name: "Primary navigation" }),
+    ).toBeVisible();
 
-  const headingLevels = await page
-    .locator("h1, h2, h3, h4, h5, h6")
-    .evaluateAll((headings) =>
-      headings.map((heading) => Number(heading.tagName.slice(1))),
-    );
-  expect(headingLevels[0]).toBe(1);
-  expect(headingLevels.filter((level) => level === 1)).toHaveLength(1);
-  headingLevels.slice(1).forEach((level, index) => {
-    expect(level).toBeLessThanOrEqual(headingLevels[index] + 1);
-  });
+    const headingLevels = await page
+      .locator("h1, h2, h3, h4, h5, h6")
+      .evaluateAll((headings) =>
+        headings.map((heading) => Number(heading.tagName.slice(1))),
+      );
+    expect(headingLevels[0], route).toBe(1);
+    expect(headingLevels.filter((level) => level === 1), route).toHaveLength(1);
+    headingLevels.slice(1).forEach((level, index) => {
+      expect(level, route).toBeLessThanOrEqual(headingLevels[index] + 1);
+    });
 
-  for (const control of await page.locator("a, button").all()) {
-    if (await control.isVisible()) {
-      await expect(control).toHaveAccessibleName(/.+/);
+    for (const control of await page.locator("a, button").all()) {
+      if (await control.isVisible()) {
+        await expect(control).toHaveAccessibleName(/.+/);
+      }
     }
   }
+});
+
+test("all public routes load without browser errors", async ({ page }) => {
+  const errors: string[] = [];
+  page.on("console", (message) => {
+    if (message.type() === "error") errors.push(message.text());
+  });
+  page.on("pageerror", (error) => errors.push(error.message));
+
+  for (const route of ["/", "/work", "/projects"]) {
+    await page.goto(route, { waitUntil: "domcontentloaded" });
+    await expect(page.locator("main")).toBeVisible();
+  }
+
+  expect(errors).toEqual([]);
 });
 
 test("keyboard visitors can skip, navigate, and switch themes", async ({
@@ -168,7 +255,7 @@ test("keyboard visitors can skip, navigate, and switch themes", async ({
   const workLink = page.getByRole("link", { name: "WORK", exact: true });
   await workLink.focus();
   await page.keyboard.press("Enter");
-  await expect(page).toHaveURL(/#work$/);
+  await expect(page).toHaveURL("/work");
 
   const themeToggle = page.getByRole("button", {
     name: "Switch to Night Flight theme",
@@ -184,7 +271,10 @@ test("themes and 404 have no serious contrast or axe violations", async ({
   for (const testCase of [
     { route: "/", theme: "light" },
     { route: "/", theme: "dark" },
+    { route: "/work", theme: "light" },
+    { route: "/projects", theme: "dark" },
     { route: "/missing-address", theme: "light" },
+    { route: "/missing-address", theme: "dark" },
   ]) {
     await page.addInitScript((theme) => {
       localStorage.setItem("atn-theme", theme);
@@ -269,13 +359,18 @@ for (const viewport of [
 ]) {
   test(`${viewport.name} layout has no horizontal overflow`, async ({ page }) => {
     await page.setViewportSize(viewport);
-    await page.goto("/");
+    for (const route of ["/", "/work", "/projects"]) {
+      await page.goto(route);
 
-    const dimensions = await page.evaluate(() => ({
-      scrollWidth: document.documentElement.scrollWidth,
-      clientWidth: document.documentElement.clientWidth,
-    }));
+      const dimensions = await page.evaluate(() => ({
+        scrollWidth: document.documentElement.scrollWidth,
+        clientWidth: document.documentElement.clientWidth,
+      }));
 
-    expect(dimensions.scrollWidth).toBeLessThanOrEqual(dimensions.clientWidth);
+      expect(
+        dimensions.scrollWidth,
+        `${route} at ${viewport.width}px`,
+      ).toBeLessThanOrEqual(dimensions.clientWidth);
+    }
   });
 }
