@@ -1,22 +1,27 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
 import { useTheme } from "next-themes";
+import { useSyncExternalStore } from "react";
 
-export function ModeToggle() {
+const subscribe = () => () => undefined;
+
+export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
+  const mounted = useSyncExternalStore(subscribe, () => true, () => false);
+  const isNight = mounted && theme === "dark";
+  const nextTheme = isNight ? "light" : "dark";
+  const nextLabel = isNight ? "Day" : "Night Flight";
 
   return (
-    <Button
-      variant="ghost"
+    <button
       type="button"
-      size="icon"
-      className="px-2"
-      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      className="theme-toggle"
+      onClick={() => setTheme(nextTheme)}
+      aria-label={`Switch to ${nextLabel} theme`}
+      suppressHydrationWarning
     >
-      <SunIcon className="h-[1.2rem] w-[1.2rem] text-neutral-800 dark:hidden dark:text-neutral-200" />
-      <MoonIcon className="hidden h-[1.2rem] w-[1.2rem] text-neutral-800 dark:block dark:text-neutral-200" />
-    </Button>
+      <span className="theme-toggle__orb" aria-hidden="true" />
+      <span suppressHydrationWarning>{isNight ? "DAY" : "NIGHT FLIGHT"}</span>
+    </button>
   );
 }

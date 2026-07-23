@@ -1,47 +1,71 @@
-<div align="center">
-<img alt="Portfolio" src="https://github.com/dillionverma/portfolio/assets/16860528/57ffca81-3f0a-4425-b31d-094f61725455" width="90%">
-</div>
+# ATN — Air Mail Portfolio
 
-# Portfolio [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fdillionverma%2Fportfolio)
+![ATN Air Mail portfolio](public/og-image.png)
 
-Built with next.js, [shadcn/ui](https://ui.shadcn.com/), and [magic ui](https://magicui.design/), deployed on Vercel.
+The source for [atn.dev](https://atn.dev), Andy Nguyen’s personal portfolio.
+The design treats `ATN` as the attention line on a piece of air mail, with
+postage-stamp branding, postcard projects, customs-declaration skills, an
+envelope contact card, and a “Return to Sender” 404 page.
 
-# Features
+## Features
 
-- Setup only takes a few minutes by editing the [single config file](./src/data/resume.tsx)
-- Built using Next.js 14, React, Typescript, Shadcn/UI, TailwindCSS, Framer Motion, Magic UI
-- Includes a blog
-- Responsive for different devices
-- Optimized for Next.js and Vercel
+- Responsive multi-page portfolio with Overview, Work, and Projects routes
+- Shared navigation with active-page state and a return-address contact anchor
+- Day and persistent “Night Flight” themes
+- Custom branded 404 experience
+- Static, typed portfolio content in `src/data/portfolio.ts`
+- Optimized project imagery, favicon, and social sharing metadata
+- Playwright interaction, responsive-layout, and accessibility coverage
 
-# Getting Started Locally
+## Screenshots
 
-1. Clone this repository to your local machine:
+| Day Flight | Night Flight |
+| --- | --- |
+| ![Air Mail portfolio in the Day Flight theme](docs/screenshots/day-flight-desktop.png) | ![Air Mail portfolio in the Night Flight theme](docs/screenshots/night-flight-desktop.png) |
 
-   ```bash
-   git clone https://github.com/dillionverma/portfolio
-   ```
+| Employment record | Project collection |
+| --- | --- |
+| ![Expanded Air Mail employment record](docs/screenshots/work-desktop.png) | ![Expanded Air Mail project collection](docs/screenshots/projects-desktop.png) |
 
-2. Move to the cloned directory
+## Development
 
-   ```bash
-   cd portfolio
-   ```
+Node.js 20.9 or newer and pnpm are required.
 
-3. Install dependencies:
+```bash
+pnpm install
+pnpm dev
+```
 
-   ```bash
-   pnpm install
-   ```
+Open [http://localhost:3000](http://localhost:3000).
 
-4. Start the local Server:
+Before opening a pull request, run:
 
-   ```bash
-   pnpm dev
-   ```
+```bash
+pnpm lint
+pnpm typecheck
+pnpm build
+pnpm test:e2e
+```
 
-5. Open the [Config file](./src/data/resume.tsx) and make changes
+Install Playwright’s Chromium runtime once when needed:
 
-# License
+```bash
+pnpm exec playwright install chromium
+```
 
-Licensed under the [MIT license](https://github.com/dillionverma/portfolio/blob/main/LICENSE.md).
+## Architecture
+
+- Next.js 16 App Router and React 19
+- Static routes at `/`, `/work`, and `/projects`, plus the branded 404
+- Tailwind CSS 3 with a purpose-built Air Mail component layer
+- `next-themes` for the device-local theme preference
+- `next/font` for Archivo, IBM Plex Mono, Caveat, and Space Grotesk
+- Playwright and axe-core for browser-level quality checks
+
+## History and license
+
+An earlier version of this repository began from
+[Dillion Verma’s portfolio template](https://github.com/dillionverma/portfolio).
+The current Air Mail visual identity, content design, and implementation are by
+Andy Nguyen. The original MIT copyright notice is preserved alongside the
+copyright for the new work in [LICENSE](LICENSE).
