@@ -29,6 +29,7 @@ export interface PostcardProject {
   sourceHref?: string;
   image: string;
   alt: string;
+  descriptionLead?: string;
   description: string;
   meta: string;
   note: string;
@@ -271,8 +272,10 @@ export const portfolio: PortfolioData = {
         "shadcn UI",
         "WebRTC",
       ],
+      descriptionLead:
+        "Open-source, offline-first scouting and strategy suite for FIRST Robotics Competition teams, reaching 8,000+ users since 2025.",
       description:
-        "Offline-first PWA for competitive robotics scouting: real-time match data collection, an advanced team-analytics dashboard, and strategic comparison tools used for tournament decisions. Includes a QR-code data-transfer system built on Luby Transform fountain codes for error-resilient dataset sharing between scouts in field conditions.",
+        "Maneuver combines match and pit scouting, interactive analytics, alliance selection, and match-strategy planning in a PWA designed for the unreliable connectivity of robotics competitions. Built on a year-agnostic React/TypeScript framework, Maneuver stores data locally with IndexedDB and supports resilient multi-device data sharing through Luby Transform QR fountain codes and WebRTC.",
     },
     {
       title: "Team 3314 Website",
