@@ -57,6 +57,16 @@ test("expanded work and project records are available as first-class pages", asy
   ]);
   await expect(page.getByText("JUL 2025 — PRESENT")).toBeVisible();
   await expect(
+    page.getByText(
+      "Open-source, offline-first scouting and strategy suite for FIRST Robotics Competition teams, reaching 8,000+ users since 2025.",
+    ),
+  ).toBeVisible();
+  await expect(
+    page.getByText(
+      "Maneuver combines match and pit scouting, interactive analytics, alliance selection, and match-strategy planning in a PWA designed for the unreliable connectivity of robotics competitions. Built on a year-agnostic React/TypeScript framework, Maneuver stores data locally with IndexedDB and supports resilient multi-device data sharing through Luby Transform QR fountain codes and WebRTC.",
+    ),
+  ).toBeVisible();
+  await expect(
     page.getByRole("link", { name: "PROJECTS", exact: true }),
   ).toHaveAttribute("aria-current", "page");
   await expect(page).toHaveTitle("Projects | Andy Nguyen");

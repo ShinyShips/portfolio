@@ -386,6 +386,11 @@ export function ProjectFeature({
             <h2 id={`project-${index}`}>{project.title}</h2>
             <time>{project.period}</time>
           </div>
+          {project.descriptionLead ? (
+            <p>
+              <strong>{project.descriptionLead}</strong>
+            </p>
+          ) : null}
           <p>{project.description}</p>
           <TechnologyList technologies={project.technologies} />
           <div className="project-feature__links">
