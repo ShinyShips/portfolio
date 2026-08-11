@@ -2,6 +2,16 @@ import { expect, test } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { portfolio } from "../src/data/portfolio";
 
+const publicRoutes = ["/", "/work", "/projects", "/projects/maneuver"] as const;
+const axeCases = [
+  ...publicRoutes.flatMap((route) => [
+    { route, theme: "light" as const },
+    { route, theme: "dark" as const },
+  ]),
+  { route: "/missing-address", theme: "light" as const },
+  { route: "/missing-address", theme: "dark" as const },
+];
+
 test("visitor receives the complete Air Mail portfolio", async ({ page }) => {
   await page.goto("/");
 
@@ -79,6 +89,24 @@ test("expanded work and project records are available as first-class pages", asy
     page.getByRole("link", { name: "EMPLOYMENT RECORD →" }),
   ).toHaveAttribute("href", "/work");
 
+  await page.getByRole("link", { name: "READ CASE STUDY →" }).click();
+  await expect(page).toHaveURL("/projects/maneuver");
+  await expect(
+    page.getByRole("heading", {
+      level: 1,
+      name: "Maneuver: Strategy that works offline.",
+    }),
+  ).toBeVisible();
+  await expect(page.getByText("8,000+", { exact: true })).toBeVisible();
+  await expect(page.getByText("15 countries", { exact: true })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "From UX constraints to architecture" }),
+  ).toBeVisible();
+  await expect(page.locator(".workflow-gallery img")).toHaveCount(4);
+  await expect(
+    page.getByRole("heading", { level: 3, name: "The 31st-ranked robot" }),
+  ).toBeVisible();
+
   for (const link of await page.locator('a[target="_blank"]').all()) {
     await expect(link).toHaveAttribute("rel", /noopener/);
     await expect(link).toHaveAttribute("rel", /noreferrer/);
@@ -138,12 +166,11 @@ test("visitor can navigate the letter and safely open external addresses", async
   }
 
   const expectedExternalUrls = [
-    ...portfolio.about.flatMap((segment) =>
-      typeof segment === "string" ? [] : [segment.href],
-    ),
     ...portfolio.work.map(({ href }) => href),
     ...portfolio.education.map(({ href }) => href),
-    ...portfolio.projects.map(({ href }) => href),
+    ...portfolio.projects.flatMap(({ caseStudyHref, href }) =>
+      caseStudyHref ? [] : [href],
+    ),
     ...portfolio.minorProjects.map(({ href }) => href),
     portfolio.social.github,
     portfolio.social.linkedin,
@@ -186,10 +213,12 @@ test("portfolio metadata and social card describe the Air Mail site", async ({
 }) => {
   await page.goto("/");
 
-  await expect(page).toHaveTitle("Andy Nguyen — UX/Design Engineer");
+  await expect(page).toHaveTitle(
+    "Andy Nguyen — Design Engineer & UX Engineer",
+  );
   await expect(page.locator('meta[name="description"]')).toHaveAttribute(
     "content",
-    /UX\/Design Engineer/,
+    "Design Engineer working at the intersection of frontend engineering, UI/UX, and human-computer interaction. Building production React experiences for complex systems.",
   );
   await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
     "content",
@@ -208,7 +237,7 @@ test("portfolio metadata and social card describe the Air Mail site", async ({
 test("semantic structure, heading order, and accessible names are complete", async ({
   page,
 }) => {
-  for (const route of ["/", "/work", "/projects"]) {
+  for (const route of publicRoutes) {
     await page.goto(route);
 
     await expect(page.locator("header")).toHaveCount(1);
@@ -244,7 +273,7 @@ test("all public routes load without browser errors", async ({ page }) => {
   });
   page.on("pageerror", (error) => errors.push(error.message));
 
-  for (const route of ["/", "/work", "/projects"]) {
+  for (const route of publicRoutes) {
     await page.goto(route, { waitUntil: "domcontentloaded" });
     await expect(page.locator("main")).toBeVisible();
   }
@@ -332,14 +361,7 @@ test("keyboard visitors can skip, navigate, and switch themes", async ({
 test("themes and 404 have no serious contrast or axe violations", async ({
   page,
 }) => {
-  for (const testCase of [
-    { route: "/", theme: "light" },
-    { route: "/", theme: "dark" },
-    { route: "/work", theme: "light" },
-    { route: "/projects", theme: "dark" },
-    { route: "/missing-address", theme: "light" },
-    { route: "/missing-address", theme: "dark" },
-  ]) {
+  for (const testCase of axeCases) {
     await page.addInitScript((theme) => {
       localStorage.setItem("atn-theme", theme);
     }, testCase.theme);
@@ -385,8 +407,22 @@ test("reduced motion, media, and interactive sizing remain safe", async ({
     0.00001,
   );
 
-  const imageHealth = await page.locator("img").evaluateAll((images) =>
-    images.map((element) => {
+  const images = page.locator("img");
+  for (const image of await images.all()) {
+    await image.scrollIntoViewIfNeeded();
+    await expect
+      .poll(() =>
+        image.evaluate(
+          (element) =>
+            (element as HTMLImageElement).complete &&
+            (element as HTMLImageElement).naturalWidth > 0,
+        ),
+      )
+      .toBe(true);
+  }
+
+  const imageHealth = await images.evaluateAll((elements) =>
+    elements.map((element) => {
       const image = element as HTMLImageElement;
       return {
         complete: image.complete,
@@ -425,7 +461,7 @@ for (const viewport of [
 ]) {
   test(`${viewport.name} layout has no horizontal overflow`, async ({ page }) => {
     await page.setViewportSize(viewport);
-    for (const route of ["/", "/work", "/projects"]) {
+    for (const route of publicRoutes) {
       await page.goto(route);
 
       const dimensions = await page.evaluate(() => ({

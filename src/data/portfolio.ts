@@ -11,6 +11,7 @@ export interface WorkItem {
     period: string;
     role: string;
     logo?: string;
+    narrative?: readonly string[];
     responsibilities: readonly string[];
     technologies: readonly string[];
   };
@@ -20,13 +21,77 @@ export interface EducationItem {
   school: string;
   href: string;
   degree: string;
+  focus?: string;
   period: string;
+}
+
+export interface SkillGroup {
+  title: string;
+  skills: readonly string[];
+}
+
+export interface ManeuverCaseStudy {
+  metadata: {
+    title: string;
+    description: string;
+  };
+  eyebrow: string;
+  title: string;
+  introduction: string;
+  website: string;
+  source: string;
+  heroImage: {
+    src: string;
+    alt: string;
+    caption: string;
+  };
+  metrics: readonly {
+    value: string;
+    label: string;
+  }[];
+  challenge: string;
+  competitionIntroduction: string;
+  constraints: readonly {
+    label: string;
+    title: string;
+    description: string;
+  }[];
+  architectureIntroduction: string;
+  architecture: readonly {
+    need: string;
+    decision: string;
+    outcome: string;
+  }[];
+  strategyIntroduction: string;
+  workflows: readonly {
+    number: string;
+    title: string;
+    description: string;
+    image: string;
+    alt: string;
+  }[];
+  userImpact: {
+    pullquote: string;
+    stories: readonly {
+      label: string;
+      title: string;
+      paragraphs: readonly string[];
+    }[];
+    fieldNote: {
+      label: string;
+      title: string;
+      description: string;
+    };
+  };
+  operations: readonly string[];
 }
 
 export interface PostcardProject {
   title: string;
   href: string;
   sourceHref?: string;
+  caseStudyHref?: string;
+  featured?: boolean;
   image: string;
   alt: string;
   descriptionLead?: string;
@@ -44,14 +109,6 @@ export interface ParcelProject {
   summary: string;
   description: string;
 }
-
-export type AboutSegment =
-  | string
-  | {
-      text: string;
-      href: string;
-      emphasis?: boolean;
-    };
 
 export interface PortfolioData {
   name: string;
@@ -74,7 +131,8 @@ export interface PortfolioData {
     work: PageIntroduction;
     projects: PageIntroduction;
   };
-  about: readonly AboutSegment[];
+  about: readonly string[];
+  contactIntroduction: string;
   footer: string;
   social: {
     github: string;
@@ -82,7 +140,7 @@ export interface PortfolioData {
   };
   work: readonly WorkItem[];
   education: readonly EducationItem[];
-  skills: readonly string[];
+  skills: readonly SkillGroup[];
   projects: readonly PostcardProject[];
   minorProjects: readonly ParcelProject[];
 }
@@ -99,13 +157,13 @@ export const portfolio: PortfolioData = {
   url: "https://atn.dev",
   email: "andy@atn.dev",
   description:
-    "UX/Design Engineer blending creativity and technology through accessible, user-friendly products.",
+    "Design Engineer working at the intersection of frontend engineering, UI/UX, and human-computer interaction. Building production React experiences for complex systems.",
   hero: {
     eyebrow: "FROM THE DESK OF ANDY NGUYEN",
     titleLead: "ATTN",
     titleRecipient: "You",
     introduction:
-      "Special delivery — a UX/Design Engineer who blends creativity and technology. Accessible, user-friendly, postage paid.",
+      "Special delivery — a Design Engineer turning complex systems into intuitive interfaces. Design thinking, production React, postage paid.",
     note: "handle with care ↴",
     portrait: {
       image: "/me.png",
@@ -130,24 +188,11 @@ export const portfolio: PortfolioData = {
     },
   },
   about: [
-    "Software Engineering at ",
-    {
-      text: "Stevens Institute of Technology",
-      href: "https://stevens.edu",
-    },
-    ", now pursuing an MS in Computer Science at ",
-    {
-      text: "Georgia Tech",
-      href: "https://gatech.edu",
-    },
-    ". I interned at Colgate-Palmolive and L3Harris, and today I’m creating ",
-    {
-      text: "a modern metadata-driven React application at L3Harris",
-      href: "https://www.l3harris.com/",
-      emphasis: true,
-    },
-    ". Mentor & alum of FIRST Robotics Team 3314, The Mechanical Mustangs of Clifton, NJ.",
+    "I’m a Design Engineer with 5+ years of experience working at the intersection of front-end engineering, UI/UX, and human-computer interaction. I enjoy taking complex workflows, figuring out how they should behave for the people using them, and building the production experience.",
+    "At L3Harris, I design and develop React/Redux interfaces for complex defense systems. Outside of work, I created Maneuver, an open-source FRC scouting and strategy platform used by 8,000+ people across 15 countries, and mentor FIRST Robotics Team 3314, The Mechanical Mustangs. I’m currently pursuing an M.S. in Computer Science with an HCI specialization at Georgia Tech.",
   ],
+  contactIntroduction:
+    "Have a design, engineering, or somewhere-in-between problem worth talking about? Send it my way.",
   footer: "© 2026 ANDY NGUYEN · POSTAGE PAID AT ATN.DEV",
   social: {
     github: "https://github.com/ShinyShips",
@@ -160,17 +205,18 @@ export const portfolio: PortfolioData = {
       summary: {
         period: "2021 — NOW",
         role: "Sr. Associate SWE",
-        detail: "Metadata-driven React app",
+        detail: "Design Engineering & React",
       },
       details: {
         period: "JAN 2021 — PRESENT",
         role: "Senior Associate Software Engineer",
         logo: "/LHX.png",
-        responsibilities: [
-          "Led a complete overhaul of performance and UX by developing a Single Page Application for a real-time, data-intensive touchscreen embedded system using React and Redux.",
-          "Designed new user interfaces in Figma that kept the style users were accustomed to while improving visual feedback and minimizing distractions.",
-          "Currently creating a modern metadata-driven React application.",
+        narrative: [
+          "My work at L3Harris has spanned front-end engineering, interaction design, and mission-critical software across multiple defense programs.",
+          "I currently develop and maintain a metadata-driven React/Redux frontend for a customer-facing data-management platform, where forms, validation rules, and migration workflows are generated dynamically from backend-defined metadata. The work sits at an interesting intersection of system design and interaction design: creating reusable interface patterns that remain understandable even when the underlying content and workflows are defined dynamically.",
+          "Previously, I spent three years developing a real-time, data-intensive React/Redux application for an embedded touchscreen system. I also designed operator interfaces that preserved established interaction patterns while improving feedback and reducing distraction. Later, I developed Java and Python software for the next-generation GPS ground control system before returning to front-end development.",
         ],
+        responsibilities: [],
         technologies: ["React", "Redux", "Java", "Python", "Figma"],
       },
     },
@@ -223,43 +269,63 @@ export const portfolio: PortfolioData = {
     {
       school: "Georgia Institute of Technology",
       href: "https://gatech.edu",
-      degree: "MS, Computer Science",
+      degree: "M.S. Computer Science",
+      focus: "Human-Computer Interaction",
       period: "2026 — 2028",
     },
     {
       school: "Stevens Institute of Technology",
       href: "https://stevens.edu",
-      degree: "BEng, Software Engineering",
+      degree: "B.E. Software Engineering",
       period: "2016 — 2021",
     },
   ],
   skills: [
-    "JavaScript",
-    "TypeScript",
-    "React",
-    "HTML",
-    "CSS",
-    "Python",
-    "Java",
-    "Astro",
-    "Next.js",
-    "Node.js",
-    "TailwindCSS",
-    "Redux",
-    "Jest",
-    "React Testing Library",
-    "Git",
-    "Jira",
-    "Balsamiq",
-    "Figma",
+    {
+      title: "Design + HCI",
+      skills: [
+        "Figma",
+        "Interaction Design",
+        "Prototyping",
+        "Responsive Design",
+        "Accessibility",
+      ],
+    },
+    {
+      title: "Front-End Engineering",
+      skills: [
+        "React",
+        "TypeScript",
+        "JavaScript",
+        "Redux",
+        "HTML",
+        "CSS",
+        "Tailwind CSS",
+        "Next.js",
+        "Astro",
+      ],
+    },
+    {
+      title: "Product Engineering",
+      skills: [
+        "Jest",
+        "React Testing Library",
+        "Git",
+        "Node.js",
+        "Offline-First Applications",
+        "Data Visualization",
+      ],
+    },
   ],
   projects: [
     {
       title: "Maneuver",
       href: "https://frc-maneuver.com",
+      caseStudyHref: "/projects/maneuver",
+      featured: true,
       image: "/maneuver.png",
       alt: "Maneuver robotics scouting dashboard",
-      meta: "FRC SCOUTING PWA · REACT/TS",
+      meta: "FRC STRATEGY PLATFORM · 8K+ USERS · 15 COUNTRIES",
       note: "wish you were here (at a robotics tournament)",
       period: "JUL 2025 — PRESENT",
       sourceHref: "https://github.com/ShinyShips/Maneuver",
@@ -283,7 +349,7 @@ export const portfolio: PortfolioData = {
       sourceHref: "https://github.com/ShinyShips/team-3314-website",
       image: "/team-3314.jpg",
       alt: "Mechanical Mustangs Team 3314 website homepage",
-      meta: "FRC TEAM WEBSITE · ASTRO",
+      meta: "TEAM WEBSITE · DESIGN + ASTRO",
       note: "built for the Mechanical Mustangs",
       period: "JUL 2026",
       technologies: [
@@ -313,7 +379,7 @@ export const portfolio: PortfolioData = {
         "Google Maps API",
       ],
       description:
-        "Led the front-end design and development of a user-friendly, accessible, responsive web app aggregating user-submitted local food & drink deals and events across the Hudson County community.",
+        "A responsive local discovery experience for finding user-submitted food, drink, and event deals across Hudson County. I designed and built the application using React, TypeScript, Next.js, and Tailwind CSS, with an emphasis on making geographically scattered information easy to browse and discover.",
     },
     {
       title: "Piper's Patterns",
@@ -353,3 +419,149 @@ export const portfolio: PortfolioData = {
     },
   ],
 } as const;
+
+export const maneuverCaseStudy: ManeuverCaseStudy = {
+  metadata: {
+    title: "Maneuver Case Study",
+    description:
+      "How Andy Nguyen designed, built, and operates an offline-first FRC scouting and strategy platform used by 8,000+ people across 15 countries.",
+  },
+  eyebrow: "CASE FILE · PRODUCT 001 · 2025 — PRESENT",
+  title: "Strategy that works offline",
+  introduction:
+    "An open-source FRC scouting and strategy platform designed and engineered for the real conditions of robotics competition.",
+  website: "https://frc-maneuver.com",
+  source: "https://github.com/ShinyShips/Maneuver",
+  heroImage: {
+    src: "/maneuver.png",
+    alt: "Maneuver match strategy workspace showing alliance data and a drawn field plan",
+    caption:
+      "Match strategy brings field planning and scouting data into one shared workspace.",
+  },
+  metrics: [
+    { value: "8,000+", label: "people" },
+    { value: "15 countries", label: "global reach" },
+    { value: "End to end", label: "design + engineering" },
+  ],
+  challenge:
+    "How do you design a data-intensive strategy platform for people using phones, tablets, and laptops inside crowded robotics competitions where connectivity cannot be trusted?",
+  competitionIntroduction:
+    "Maneuver serves two very different modes of attention: scouts recording rapid observations in the stands and analysts making consequential decisions from dense information. The interface has to support both without assuming a quiet room, a large screen, or a reliable network.",
+  constraints: [
+    {
+      label: "Fast input",
+      title: "Scouts need speed",
+      description:
+        "Large touch targets, short paths, and game-specific inputs help people record a match quickly in a loud, time-constrained environment.",
+    },
+    {
+      label: "Dense analysis",
+      title: "Strategists need context",
+      description:
+        "Analytics must reveal patterns without hiding the underlying match data that lets a team trust and act on the result.",
+    },
+    {
+      label: "Any device",
+      title: "Teams bring what they have",
+      description:
+        "The same workflows have to remain clear across phones in the stands, tablets in the pit, and laptops at the strategy table.",
+    },
+  ],
+  architectureIntroduction:
+    "The technical architecture followed from the experience the product needed to guarantee. Each constraint became a system decision.",
+  architecture: [
+    {
+      need: "Offline requirement",
+      decision: "IndexedDB",
+      outcome:
+        "Every core workflow remains available when venue connectivity disappears.",
+    },
+    {
+      need: "No server requirement",
+      decision: "Local-first architecture",
+      outcome:
+        "Teams can start scouting without deploying or maintaining infrastructure.",
+    },
+    {
+      need: "Multiple scouting devices",
+      decision: "QR fountain codes + WebRTC",
+      outcome:
+        "Data moves between devices through resilient, flexible transfer paths.",
+    },
+    {
+      need: "Different games every year",
+      decision: "Year-agnostic framework",
+      outcome:
+        "Annual game rules can change without rebuilding the product from scratch.",
+    },
+  ],
+  strategyIntroduction:
+    "The product follows the decision-making journey from observation to action. Each workflow exists because the next one depends on it.",
+  workflows: [
+    {
+      number: "01",
+      title: "Match scouting",
+      description:
+        "Capture what a robot actually does, quickly and consistently.",
+      image: "/maneuver-scouting.png",
+      alt: "Maneuver autonomous match scouting interface with a tappable field map and recent actions",
+    },
+    {
+      number: "02",
+      title: "Analytics",
+      description:
+        "Turn many observations into comparable performance patterns.",
+      image: "/maneuver-analytics.png",
+      alt: "Maneuver strategy overview with a performance chart and dense team statistics table",
+    },
+    {
+      number: "03",
+      title: "Pick lists",
+      description:
+        "Help teams weigh capability, reliability, and strategic fit.",
+      image: "/maneuver-pick-lists.png",
+      alt: "Maneuver pick-list interface showing available teams and alliance selections",
+    },
+    {
+      number: "04",
+      title: "Match strategy",
+      description:
+        "Bring alliance data into a shared plan teams can use on the field.",
+      image: "/maneuver.png",
+      alt: "Maneuver match strategy interface with a drawn field plan and alliance data",
+    },
+  ],
+  userImpact: {
+    pullquote:
+      "Maneuver reached 8,000+ users across 15 countries, ranging from teams building their first scouting program to teams competing at the FIRST World Championship.",
+    stories: [
+      {
+        label: "EVENT STORY 01",
+        title: "The 31st-ranked robot",
+        paragraphs: [
+          "A defense-focused robot entered an event ranked 31st—a position that made it easy to overlook through standings alone.",
+          "Maneuver’s scouting data surfaced the robot’s strategic value on defense, revealing a contribution the ranking did not capture.",
+          "The moment clarified the product’s job: not to replace team judgment, but to make the evidence visible when a single number flattens it.",
+        ],
+      },
+      {
+        label: "EVENT STORY 02",
+        title: "From the stands to Worlds",
+        paragraphs: [
+          "At the FIRST World Championship, teams relied on the same Maneuver workflows in the highest-pressure environment in the program.",
+          "Seeing the product in use at the sport’s largest event made its reach tangible—and made stability, edge cases, and support part of the design experience.",
+        ],
+      },
+    ],
+    fieldNote: {
+      label: "FIELD NOTE 01",
+      title: "Rank is a signal, not the strategy.",
+      description:
+        "The interface should make overlooked capabilities visible while preserving the evidence behind the recommendation.",
+    },
+  },
+  operations: [
+    "Once thousands of people were relying on Maneuver during competitions, the way I approached development changed. Bugs could affect teams competing that weekend. New features had to be balanced against stability. User reports exposed workflows, devices, and edge cases I hadn’t anticipated.",
+    "Operating Maneuver taught me to treat design as an ongoing conversation with users rather than something completed before implementation.",
+  ],
+};

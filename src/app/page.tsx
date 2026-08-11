@@ -39,23 +39,11 @@ export default function Page() {
 
           <section id="overview" className="portfolio-section">
             <SectionHeading>Overview</SectionHeading>
-            <p className="about-copy">
-              {portfolio.about.map((segment, index) =>
-                typeof segment === "string" ? (
-                  segment
-                ) : (
-                  <a
-                    className={segment.emphasis ? "attention-link" : undefined}
-                    href={segment.href}
-                    key={`${segment.href}-${index}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {segment.text}
-                  </a>
-                ),
-              )}
-            </p>
+            <div className="about-copy">
+              {portfolio.about.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+            </div>
           </section>
 
           <section id="work" className="portfolio-section">
@@ -83,7 +71,15 @@ export default function Page() {
                 >
                   <span>
                     <strong>{item.school}</strong>
-                    <small>{item.degree}</small>
+                    <small>
+                      {item.degree}
+                      {item.focus ? (
+                        <>
+                          {" · "}
+                          <em>{item.focus}</em>
+                        </>
+                      ) : null}
+                    </small>
                   </span>
                   <time>{item.period}</time>
                 </a>
@@ -95,9 +91,16 @@ export default function Page() {
             <SectionHeading note="SKILLS, DECLARED">
               Contents of Parcel
             </SectionHeading>
-            <div className="skill-list">
-              {portfolio.skills.map((skill) => (
-                <span key={skill}>{skill}</span>
+            <div className="skill-groups">
+              {portfolio.skills.map((group) => (
+                <section className="skill-group" key={group.title}>
+                  <h3>{group.title}</h3>
+                  <div className="skill-list">
+                    {group.skills.map((skill) => (
+                      <span key={skill}>{skill}</span>
+                    ))}
+                  </div>
+                </section>
               ))}
             </div>
           </section>

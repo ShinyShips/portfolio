@@ -9,7 +9,7 @@ envelope contact card, and a “Return to Sender” 404 page.
 
 ## Features
 
-- Responsive multi-page portfolio with Overview, Work, and Projects routes
+- Responsive multi-page portfolio with Overview, Work, Projects, and Maneuver case-study routes
 - Shared navigation with active-page state and a return-address contact anchor
 - Day and persistent “Night Flight” themes
 - Custom branded 404 experience
@@ -56,7 +56,7 @@ pnpm exec playwright install chromium
 ## Architecture
 
 - Next.js 16 App Router and React 19
-- Static routes at `/`, `/work`, and `/projects`, plus the branded 404
+- Static routes at `/`, `/work`, `/projects`, and `/projects/maneuver`, plus the branded 404
 - Tailwind CSS 3 with a purpose-built Air Mail component layer
 - `next-themes` for the device-local theme preference
 - `next/font` for Archivo, IBM Plex Mono, Caveat, and Space Grotesk

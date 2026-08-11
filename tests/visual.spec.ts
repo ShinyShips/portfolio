@@ -54,3 +54,16 @@ test("Return to Sender at desktop and mobile sizes", async ({ page }, testInfo) 
     });
   }
 });
+
+test("Maneuver case study at desktop and mobile sizes", async ({
+  page,
+}, testInfo) => {
+  for (const viewport of [viewports[0], viewports[2]]) {
+    await page.setViewportSize(viewport);
+    await page.goto("/projects/maneuver");
+    await page.screenshot({
+      path: testInfo.outputPath(`maneuver-${viewport.name}.png`),
+      fullPage: true,
+    });
+  }
+});

@@ -9,6 +9,8 @@ import {
 } from "next/font/google";
 import "./globals.css";
 
+const siteTitle = "Andy Nguyen — Design Engineer & UX Engineer";
+
 const archivo = Archivo({
   subsets: ["latin"],
   weight: ["500", "700", "900"],
@@ -40,7 +42,7 @@ const spaceGrotesk = Space_Grotesk({
 export const metadata: Metadata = {
   metadataBase: new URL(portfolio.url),
   title: {
-    default: "Andy Nguyen — UX/Design Engineer",
+    default: siteTitle,
     template: "%s | Andy Nguyen",
   },
   description: portfolio.description,
@@ -52,7 +54,7 @@ export const metadata: Metadata = {
     apple: "/favicon-512.png",
   },
   openGraph: {
-    title: "Andy Nguyen — UX/Design Engineer",
+    title: siteTitle,
     description: portfolio.description,
     url: "/",
     siteName: "ATN",
@@ -69,7 +71,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Andy Nguyen — UX/Design Engineer",
+    title: siteTitle,
     description: portfolio.description,
     images: ["/og-image.png"],
   },
