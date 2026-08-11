@@ -241,25 +241,55 @@ export function Postcard({
   project: PostcardProject;
   index: number;
 }) {
+  const className = `postcard${project.featured ? " postcard--featured" : ""}`;
+  const content = (
+    <>
+      <Image
+        src={project.image}
+        alt={project.alt}
+        width={800}
+        height={500}
+        priority={project.featured}
+        sizes={
+          project.featured
+            ? "(max-width: 620px) 90vw, 520px"
+            : "(max-width: 480px) 90vw, (max-width: 760px) 42vw, 230px"
+        }
+      />
+      <div className="postcard__caption">
+        {project.featured ? (
+          <span className="postcard__featured-label">FEATURED DISPATCH</span>
+        ) : null}
+        <h3>{project.title}</h3>
+        <span className="postcard__period">{project.meta}</span>
+        <p className="postcard__note">{project.note}</p>
+        {project.caseStudyHref ? (
+          <span className="postcard__action">READ CASE STUDY →</span>
+        ) : null}
+      </div>
+    </>
+  );
+
+  if (project.caseStudyHref) {
+    return (
+      <Link
+        className={className}
+        data-tilt={(index % 3) + 1}
+        href={project.caseStudyHref}
+      >
+        {content}
+      </Link>
+    );
+  }
+
   return (
     <a
-      className="postcard"
+      className={className}
       data-tilt={(index % 3) + 1}
       href={project.href}
       {...externalProps}
     >
-      <Image
-        src={project.image}
-        alt={project.alt}
-        width={500}
-        height={300}
-        sizes="(max-width: 480px) 90vw, (max-width: 760px) 42vw, 230px"
-      />
-      <div className="postcard__caption">
-        <h3>{project.title}</h3>
-        <span className="postcard__period">{project.meta}</span>
-        <p className="postcard__note">{project.note}</p>
-      </div>
+      {content}
     </a>
   );
 }
@@ -340,14 +370,23 @@ export function WorkDossier({ item }: { item: WorkItem }) {
         </div>
         <time>{item.details.period}</time>
       </div>
-      <ul className="work-dossier__responsibilities">
-        {item.details.responsibilities.map((responsibility) => (
-          <li key={responsibility}>
-            <span aria-hidden="true">✦</span>
-            {responsibility}
-          </li>
-        ))}
-      </ul>
+      {item.details.narrative ? (
+        <div className="work-dossier__narrative">
+          {item.details.narrative.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+        </div>
+      ) : null}
+      {item.details.responsibilities.length > 0 ? (
+        <ul className="work-dossier__responsibilities">
+          {item.details.responsibilities.map((responsibility) => (
+            <li key={responsibility}>
+              <span aria-hidden="true">✦</span>
+              {responsibility}
+            </li>
+          ))}
+        </ul>
+      ) : null}
       <TechnologyList technologies={item.details.technologies} />
     </section>
   );
@@ -394,6 +433,9 @@ export function ProjectFeature({
           <p>{project.description}</p>
           <TechnologyList technologies={project.technologies} />
           <div className="project-feature__links">
+            {project.caseStudyHref ? (
+              <Link href={project.caseStudyHref}>READ CASE STUDY →</Link>
+            ) : null}
             <a href={project.href} {...externalProps}>
               WEBSITE ↗
             </a>
@@ -457,6 +499,9 @@ export function ContactEnvelope() {
             <h2 id="contact-title" className="eyebrow">
               RETURN ADDRESS
             </h2>
+            <p className="contact-introduction">
+              {portfolio.contactIntroduction}
+            </p>
             <p className="contact-email">
               <a href={`mailto:${portfolio.email}`}>{portfolio.email}</a>
             </p>
