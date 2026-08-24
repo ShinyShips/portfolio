@@ -166,7 +166,7 @@ export const portfolio: PortfolioData = {
       "Special delivery — a Design Engineer turning complex systems into intuitive interfaces. Design thinking, production React, postage paid.",
     note: "handle with care ↴",
     portrait: {
-      image: "/me.png",
+      image: "/headshot.jpg",
       alt: "Andy Nguyen",
       postage: "USA · 2026",
     },
